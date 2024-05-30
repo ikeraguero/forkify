@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/ikeraguero/forkify#readme",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.12.0"
+    "@parcel/transformer-sass": "^2.12.0",
+    "core-js": "^3.37.1",
+    "fraction": "^0.2.0",
+    "regenerator-runtime": "^0.14.1"
   }
 }

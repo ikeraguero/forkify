@@ -1,13 +1,13 @@
-const recipeContainer = document.querySelector('.recipe');
+import 'core-js/stable'
+import "regenerator-runtime"
+import searchView from './views/searchView'
+import * as model from './model.js'
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
+const controlSearch = function() {
+  const query = searchView.getQuery()
+  model.loadSearchResults(query)
 
-// https://forkify-api.herokuapp.com/v2
+}
 
-///////////////////////////////////////
+// Handling query when search form is submited
+searchView.addEventHandler(controlSearch)
