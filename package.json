@@ -1,0 +1,27 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "",
+  "default": "index.html",
+  "dependencies": {
+    "parcel": "^2.12.0",
+    "sass": "^1.77.3"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikeraguero/forkify.git"
+  },
+  "author": "iker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ikeraguero/forkify/issues"
+  },
+  "homepage": "https://github.com/ikeraguero/forkify#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.12.0"
+  }
+}
