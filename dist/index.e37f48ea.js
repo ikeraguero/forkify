@@ -589,16 +589,20 @@ var _webImmediateJs = require("core-js/modules/web.immediate.js");
 var _regeneratorRuntime = require("regenerator-runtime");
 var _searchView = require("./views/searchView");
 var _searchViewDefault = parcelHelpers.interopDefault(_searchView);
+var _resultsViewJs = require("./views/resultsView.js");
+var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
 var _modelJs = require("./model.js");
-const controlSearch = function() {
+const controlSearchResults = async function() {
+    // Searching and loading results
     const query = (0, _searchViewDefault.default).getQuery();
-    _modelJs.state.search.query = `${query}`;
-    _modelJs.loadSearchResults(query);
+    await _modelJs.loadSearchResults(query);
+    // Rendering results
+    (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results);
 };
 // Handling query when search form is submited
-(0, _searchViewDefault.default).addEventHandler(controlSearch);
+(0, _searchViewDefault.default).addEventHandler(controlSearchResults);
 
-},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21","./views/resultsView.js":"cSbZE"}],"49tUX":[function(require,module,exports) {
 "use strict";
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -2481,17 +2485,22 @@ const state = {
     }
 };
 const loadSearchResults = async function(query) {
-    const results = await fetch(`${(0, _configJs.API_URL)}?search=${query}`);
-    const { data } = await results.json();
-    console.log(data.recipes);
-    state.results = data.recipes.map((rec)=>{
-        return {
-            id: rec.id,
-            title: rec.title,
-            image: rec.image_url,
-            publisher: rec.publisher
-        };
-    });
+    try {
+        state.search.query = query;
+        const results = await fetch(`${(0, _configJs.API_URL)}?search=${query}`);
+        const { data } = await results.json();
+        console.log(data.recipes);
+        state.search.results = data.recipes.map((rec)=>{
+            return {
+                id: rec.id,
+                title: rec.title,
+                image: rec.image_url,
+                publisher: rec.publisher
+            };
+        });
+    } catch (err) {
+        console.error(err);
+    }
 };
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
@@ -2500,6 +2509,83 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cSbZE":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _iconsSvg = require("../../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class ResultsView {
+    #parentEl = document.querySelector(".search-results");
+    #container = document.querySelector(".results");
+    #data;
+    render(data) {
+        this.#container.innerHTML = "";
+        console.log(data);
+        this.#container.insertAdjacentHTML("beforeend", this.generateMarkup(data));
+    }
+    generateMarkup(data) {
+        let markup = "";
+        data.forEach((rec)=>{
+            markup += ` <li class="preview">
+        <a class="preview__link preview__link" href="#23456">
+          <figure class="preview__fig">
+            <img src="${rec.image}" alt="Test" />
+          </figure>
+          <div class="preview__data">
+            <h4 class="preview__title">${rec.title}</h4>
+            <p class="preview__publisher">${rec.publisher}</p>
+            <div class="preview__user-generated">
+              <svg>
+                <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
+              </svg>
+            </div>
+          </div>
+        </a>
+      </li>`;
+        });
+        return markup;
+    }
+}
+exports.default = new ResultsView;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../img/icons.svg":"cMpiy"}],"cMpiy":[function(require,module,exports) {
+module.exports = require("17cff2908589362b").getBundleURL("hWUTQ") + "icons.21bad73c.svg" + "?" + Date.now();
+
+},{"17cff2908589362b":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+}
+// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

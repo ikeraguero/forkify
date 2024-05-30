@@ -13,15 +13,20 @@ export const state = {
 
 // Loading search results
 export const loadSearchResults = async function(query) {
-    const results = await fetch(`${API_URL}?search=${query}`)
-    const {data} = await results.json()
-    console.log(data.recipes)
-    state.results = data.recipes.map(rec=> {
-        return {
-            id: rec.id,
-            title: rec.title,
-            image: rec.image_url,
-            publisher: rec.publisher
-        }
-    })
-}
+    try {
+        state.search.query = query;
+        const results = await fetch(`${API_URL}?search=${query}`)
+        const {data} = await results.json()
+        console.log(data.recipes)
+        state.search.results = data.recipes.map(rec=> {
+            return {
+                id: rec.id,
+                title: rec.title,
+                image: rec.image_url,
+                publisher: rec.publisher
+            }
+        })
+    } catch(err) {
+        console.error(err)
+    }
+    }
