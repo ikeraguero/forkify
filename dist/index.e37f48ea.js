@@ -592,6 +592,7 @@ var _searchViewDefault = parcelHelpers.interopDefault(_searchView);
 var _modelJs = require("./model.js");
 const controlSearch = function() {
     const query = (0, _searchViewDefault.default).getQuery();
+    _modelJs.state.search.query = `${query}`;
     _modelJs.loadSearchResults(query);
 };
 // Handling query when search form is submited
@@ -2468,10 +2469,29 @@ exports.default = new SearchView;
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 var _configJs = require("./config.js");
+const state = {
+    recipe: [],
+    search: {
+        query: "",
+        results: [],
+        page: 1
+    }
+};
 const loadSearchResults = async function(query) {
-    console.log(`${(0, _configJs.API_URL)}?search=${query}`);
+    const results = await fetch(`${(0, _configJs.API_URL)}?search=${query}`);
+    const { data } = await results.json();
+    console.log(data.recipes);
+    state.results = data.recipes.map((rec)=>{
+        return {
+            id: rec.id,
+            title: rec.title,
+            image: rec.image_url,
+            publisher: rec.publisher
+        };
+    });
 };
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {

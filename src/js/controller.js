@@ -5,6 +5,7 @@ import * as model from './model.js'
 
 const controlSearch = function() {
   const query = searchView.getQuery()
+  model.state.search.query = `${query}`
   model.loadSearchResults(query)
 
 }
