@@ -591,6 +591,8 @@ var _searchView = require("./views/searchView");
 var _searchViewDefault = parcelHelpers.interopDefault(_searchView);
 var _resultsViewJs = require("./views/resultsView.js");
 var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
+var _recipeViewJs = require("./views/recipeView.js");
+var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
 var _modelJs = require("./model.js");
 const controlSearchResults = async function() {
     // Searching and loading results
@@ -599,10 +601,17 @@ const controlSearchResults = async function() {
     // Rendering results
     (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results);
 };
+const controlRecipe = function() {
+    const id = window.location.hash.slice(1);
+    _modelJs.loadRecipe(id);
+};
 // Handling query when search form is submited
 (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
+(0, _recipeViewJsDefault.default).addEventHandler(controlRecipe);
+const init = function() {};
+init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21","./views/resultsView.js":"cSbZE"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21","./views/resultsView.js":"cSbZE","./views/recipeView.js":"l60JC"}],"49tUX":[function(require,module,exports) {
 "use strict";
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -2475,6 +2484,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
+parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 var _configJs = require("./config.js");
 const state = {
     recipe: [],
@@ -2489,7 +2499,6 @@ const loadSearchResults = async function(query) {
         state.search.query = query;
         const results = await fetch(`${(0, _configJs.API_URL)}?search=${query}`);
         const { data } = await results.json();
-        console.log(data.recipes);
         state.search.results = data.recipes.map((rec)=>{
             return {
                 id: rec.id,
@@ -2498,6 +2507,24 @@ const loadSearchResults = async function(query) {
                 publisher: rec.publisher
             };
         });
+    } catch (err) {
+        console.error(err);
+    }
+};
+const loadRecipe = async function(id) {
+    try {
+        const { data } = await (await fetch(`${(0, _configJs.API_URL)}${id}`)).json();
+        if (!data) return;
+        state.recipe = {
+            id: data.recipe.id,
+            title: data.recipe.title,
+            image: data.recipe.image_url,
+            ingredients: data.recipe.ingredients,
+            publisher: data.recipe.publisher,
+            servings: data.recipe.servings,
+            source: data.recipe.source_url
+        };
+        console.log(state.recipe);
     } catch (err) {
         console.error(err);
     }
@@ -2520,14 +2547,13 @@ class ResultsView {
     #data;
     render(data) {
         this.#container.innerHTML = "";
-        console.log(data);
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup(data));
     }
     generateMarkup(data) {
         let markup = "";
         data.forEach((rec)=>{
             markup += ` <li class="preview">
-        <a class="preview__link preview__link" href="#23456">
+        <a class="preview__link preview__link" href="#${rec.id}">
           <figure class="preview__fig">
             <img src="${rec.image}" alt="Test" />
           </figure>
@@ -2586,6 +2612,21 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
+},{}],"l60JC":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class RecipeView {
+    #parentEl = document.querySelector("recipe");
+    addEventHandler(handler) {
+        const options = [
+            "load",
+            "hashchange"
+        ];
+        options.forEach((ev)=>window.addEventListener(ev, handler));
+    }
+}
+exports.default = new RecipeView;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

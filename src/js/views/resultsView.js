@@ -7,7 +7,6 @@ class ResultsView {
 
     render(data) {
         this.#container.innerHTML = '';
-        console.log(data)
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup(data))
     }
 
@@ -15,7 +14,7 @@ class ResultsView {
         let markup = '';
         data.forEach(rec => {
         markup += ` <li class="preview">
-        <a class="preview__link preview__link" href="#23456">
+        <a class="preview__link preview__link" href="#${rec.id}">
           <figure class="preview__fig">
             <img src="${rec.image}" alt="Test" />
           </figure>
