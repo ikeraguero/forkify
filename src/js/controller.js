@@ -15,9 +15,13 @@ const controlSearchResults =  async function() {
   resultsView.render(model.state.search.results)
 }
 
-const controlRecipe = function() {
+const controlRecipe = async function() {
   const id = window.location.hash.slice(1)
-  model.loadRecipe(id)
+  await model.loadRecipe(id)
+
+  // Checking if the current recipe object is not empty before rendering the recipe
+  if(Object.keys(model.state.recipe).length > 0)
+  recipeView.render(model.state.recipe)
 }
 
 // Handling query when search form is submited
