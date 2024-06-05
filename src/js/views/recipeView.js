@@ -9,21 +9,21 @@ class RecipeView {
         options.forEach(ev=> window.addEventListener(ev, handler))
     }
 
-    getData(data) {
-        return data;
+    setData(data) {
+        this.#data = data;
     }
 
-    render(data) {
+    render() {
             this.#parentEl.innerHTML = '';
-            let markup = this.generateMarkup(data);
+            let markup = this.generateMarkup();
             this.#parentEl.insertAdjacentHTML('afterbegin', markup)
     }
 
-    generateMarkup(data) {
+    generateMarkup() {
         return `<figure class="recipe__fig">
-        <img src="${data.image}" alt="Tomato" class="recipe__img" />
+        <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
         <h1 class="recipe__title">
-          <span>${data.title}</span>
+          <span>${this.#data.title}</span>
         </h1>
       </figure>
 
@@ -32,7 +32,7 @@ class RecipeView {
           <svg class="recipe__info-icon">
             <use href="${icons}#icon-clock"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--minutes">${data.time}</span>
+          <span class="recipe__info-data recipe__info-data--minutes">${this.#data.time}</span>
           <span class="recipe__info-text">minutes</span>
         </div>
         <div class="recipe__info">

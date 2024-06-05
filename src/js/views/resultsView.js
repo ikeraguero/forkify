@@ -5,14 +5,19 @@ class ResultsView {
     #container = document.querySelector(".results")
     #data
 
-    render(data) {
-        this.#container.innerHTML = '';
-        this.#container.insertAdjacentHTML("beforeend", this.generateMarkup(data))
+
+    setData(data) {
+      this.#data = data;
     }
 
-    generateMarkup(data) {
+    render() {
+        this.#container.innerHTML = '';
+        this.#container.insertAdjacentHTML("beforeend", this.generateMarkup())
+    }
+
+    generateMarkup() {
         let markup = '';
-        data.forEach(rec => {
+        this.#data.forEach(rec => {
         markup += ` <li class="preview">
         <a class="preview__link preview__link" href="#${rec.id}">
           <figure class="preview__fig">

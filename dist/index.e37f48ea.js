@@ -599,13 +599,16 @@ const controlSearchResults = async function() {
     const query = (0, _searchViewDefault.default).getQuery();
     await _modelJs.loadSearchResults(query);
     // Rendering results
-    (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results);
+    (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.results);
+    (0, _resultsViewJsDefault.default).render();
 };
 const controlRecipe = async function() {
     const id = window.location.hash.slice(1);
     await _modelJs.loadRecipe(id);
-    // Checking if the current recipe object is not empty before rendering the recipe
-    if (Object.keys(_modelJs.state.recipe).length > 0) (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
+    if (!Object.keys(_modelJs.state.recipe).length > 0) return;
+    (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
+    (0, _recipeViewJsDefault.default).render();
 };
 // Handling query when search form is submited
 (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
@@ -2548,13 +2551,16 @@ class ResultsView {
     #parentEl = document.querySelector(".search-results");
     #container = document.querySelector(".results");
     #data;
-    render(data) {
-        this.#container.innerHTML = "";
-        this.#container.insertAdjacentHTML("beforeend", this.generateMarkup(data));
+    setData(data) {
+        this.#data = data;
     }
-    generateMarkup(data) {
+    render() {
+        this.#container.innerHTML = "";
+        this.#container.insertAdjacentHTML("beforeend", this.generateMarkup());
+    }
+    generateMarkup() {
         let markup = "";
-        data.forEach((rec)=>{
+        this.#data.forEach((rec)=>{
             markup += ` <li class="preview">
         <a class="preview__link preview__link" href="#${rec.id}">
           <figure class="preview__fig">
@@ -2630,19 +2636,19 @@ class RecipeView {
         ];
         options.forEach((ev)=>window.addEventListener(ev, handler));
     }
-    getData(data) {
-        return data;
+    setData(data) {
+        this.#data = data;
     }
-    render(data) {
+    render() {
         this.#parentEl.innerHTML = "";
-        let markup = this.generateMarkup(data);
+        let markup = this.generateMarkup();
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
     }
-    generateMarkup(data) {
+    generateMarkup() {
         return `<figure class="recipe__fig">
-        <img src="${data.image}" alt="Tomato" class="recipe__img" />
+        <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
         <h1 class="recipe__title">
-          <span>${data.title}</span>
+          <span>${this.#data.title}</span>
         </h1>
       </figure>
 
@@ -2651,7 +2657,7 @@ class RecipeView {
           <svg class="recipe__info-icon">
             <use href="${0, _iconsSvgDefault.default}#icon-clock"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--minutes">${data.time}</span>
+          <span class="recipe__info-data recipe__info-data--minutes">${this.#data.time}</span>
           <span class="recipe__info-text">minutes</span>
         </div>
         <div class="recipe__info">
