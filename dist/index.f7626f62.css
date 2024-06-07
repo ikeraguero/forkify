@@ -392,6 +392,10 @@ body {
   opacity: 1;
 }
 
+.teste {
+  display: none;
+}
+
 .preview__link:link, .preview__link:visited {
   border-right: 1px solid #fff;
   align-items: center;

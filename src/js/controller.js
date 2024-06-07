@@ -24,6 +24,7 @@ const controlRecipe = async function() {
   if(!Object.keys(model.state.recipe).length > 0) return
   recipeView.setData(model.state.recipe)
   recipeView.render()
+  resultsView.render()
 }
 
 // Handling query when search form is submited

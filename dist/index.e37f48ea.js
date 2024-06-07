@@ -609,6 +609,7 @@ const controlRecipe = async function() {
     if (!Object.keys(_modelJs.state.recipe).length > 0) return;
     (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
     (0, _recipeViewJsDefault.default).render();
+    (0, _resultsViewJsDefault.default).render();
 };
 // Handling query when search form is submited
 (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
@@ -2557,7 +2558,24 @@ class ResultsView {
     render() {
         this.#container.innerHTML = "";
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup());
-    }
+    /* Trying to add the preview--active class to the current recipe.
+
+        let current_recipe = this.#data.filter(rec =>
+          rec.id === window.location.hash.slice(1)
+        )
+
+        document.querySelectorAll(".preview__link").forEach(link => {
+
+          const href = new URL(link.href);
+          const fragment = href.hash.substring(1);
+
+          if(fragment==current_recipe[0]?.id) {
+            console.log('yes')
+            link.classList.add("teste")
+            console.log(link)
+          }
+        })
+        */ }
     generateMarkup() {
         let markup = "";
         this.#data.forEach((rec)=>{
@@ -2624,6 +2642,7 @@ exports.getOrigin = getOrigin;
 },{}],"l60JC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _regeneratorRuntime = require("regenerator-runtime");
 var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class RecipeView {
@@ -2645,7 +2664,7 @@ class RecipeView {
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
     }
     generateMarkup() {
-        return `<figure class="recipe__fig">
+        let markup = `<figure class="recipe__fig">
         <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
         <h1 class="recipe__title">
           <span>${this.#data.title}</span>
@@ -2655,27 +2674,27 @@ class RecipeView {
       <div class="recipe__details">
         <div class="recipe__info">
           <svg class="recipe__info-icon">
-            <use href="${0, _iconsSvgDefault.default}#icon-clock"></use>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-clock"></use>
           </svg>
           <span class="recipe__info-data recipe__info-data--minutes">${this.#data.time}</span>
           <span class="recipe__info-text">minutes</span>
         </div>
         <div class="recipe__info">
           <svg class="recipe__info-icon">
-            <use href="${0, _iconsSvgDefault.default}#icon-users"></use>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-users"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--people">4</span>
+          <span class="recipe__info-data recipe__info-data--people">${this.#data.servings}</span>
           <span class="recipe__info-text">servings</span>
 
           <div class="recipe__info-buttons">
             <button class="btn--tiny btn--increase-servings">
               <svg>
-                <use href="${0, _iconsSvgDefault.default}#icon-minus-circle"></use>
+                <use href="${(0, _iconsSvgDefault.default)}#icon-minus-circle"></use>
               </svg>
             </button>
             <button class="btn--tiny btn--increase-servings">
               <svg>
-                <use href="${0, _iconsSvgDefault.default}#icon-plus-circle"></use>
+                <use href="${(0, _iconsSvgDefault.default)}#icon-plus-circle"></use>
               </svg>
             </button>
           </div>
@@ -2688,7 +2707,7 @@ class RecipeView {
         </div>
         <button class="btn--round">
           <svg class="">
-            <use href="src/img/icons.svg#icon-bookmark-fill"></use>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-bookmark-fill"></use>
           </svg>
         </button>
       </div>
@@ -2696,48 +2715,41 @@ class RecipeView {
       <div class="recipe__ingredients">
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
-          <li class="recipe__ingredient">
-            <svg class="recipe__icon">
-              <use href="src/img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">1000</div>
-            <div class="recipe__description">
-              <span class="recipe__unit">g</span>
-              pasta
-            </div>
-          </li>
-
-          <li class="recipe__ingredient">
-            <svg class="recipe__icon">
-              <use href="src/img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__quantity">0.5</div>
-            <div class="recipe__description">
-              <span class="recipe__unit">cup</span>
-              ricotta cheese
-            </div>
-          </li>
-        </ul>
+        `;
+        this.#data.ingredients.forEach((ing)=>{
+            markup += ` <li class="recipe__ingredient">
+        <svg class="recipe__icon">
+          <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
+        </svg>
+        <div class="recipe__quantity">${ing.quantity ? ing.quantity : ""}</div>
+        <div class="recipe__description">
+          <span class="recipe__unit">${ing.unit}</span>
+          ${ing.description}
+        </div>
+      </li>`;
+        });
+        markup += `
+      </ul>
       </div>
-
       <div class="recipe__directions">
         <h2 class="heading--2">How to cook it</h2>
         <p class="recipe__directions-text">
           This recipe was carefully designed and tested by
-          <span class="recipe__publisher">The Pioneer Woman</span>. Please check out
+          <span class="recipe__publisher">${this.#data.publisher}</span>. Please check out
           directions at their website.
         </p>
         <a
           class="btn--small recipe__btn"
-          href="http://thepioneerwoman.com/cooking/pasta-with-tomato-cream-sauce/"
+          href="${this.#data.source}"
           target="_blank"
         >
           <span>Directions</span>
           <svg class="search__icon">
-            <use href="src/img/icons.svg#icon-arrow-right"></use>
+            <use href="${0, _iconsSvgDefault.default}}#icon-arrow-right"></use>
           </svg>
         </a>
       </div>`;
+        return markup;
     }
     generateMessage() {
         return `<div class="message">
@@ -2753,6 +2765,6 @@ class RecipeView {
 }
 exports.default = new RecipeView;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../img/icons.svg":"cMpiy"}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../img/icons.svg":"cMpiy","regenerator-runtime":"dXNgZ"}]},["hycaY","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map

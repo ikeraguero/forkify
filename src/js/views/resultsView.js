@@ -13,6 +13,25 @@ class ResultsView {
     render() {
         this.#container.innerHTML = '';
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup())
+
+        /* Trying to add the preview--active class to the current recipe.
+
+        let current_recipe = this.#data.filter(rec =>
+          rec.id === window.location.hash.slice(1)
+        )
+
+        document.querySelectorAll(".preview__link").forEach(link => {
+
+          const href = new URL(link.href);
+          const fragment = href.hash.substring(1);
+
+          if(fragment==current_recipe[0]?.id) {
+            console.log('yes')
+            link.classList.add("teste")
+            console.log(link)
+          }
+        })
+        */ 
     }
 
     generateMarkup() {
