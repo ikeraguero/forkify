@@ -1,4 +1,5 @@
 import {API_URL} from './config.js'
+import { RESULTS_PER_PAGE } from './config.js';
 
 // Defining the application state
 export const state = {
@@ -6,6 +7,7 @@ export const state = {
     search: {
         query: '',
         results: [],
+        results_per_page: RESULTS_PER_PAGE,
         page: 1
     }
 }
