@@ -100,6 +100,10 @@ body {
   height: 1.75rem;
 }
 
+.btn--hidden {
+  visibility: hidden;
+}
+
 .btn--inline {
   color: #f38e82;
   cursor: pointer;

@@ -3,6 +3,7 @@ import "regenerator-runtime"
 import searchView from './views/searchView'
 import resultsView from './views/resultsView.js'
 import recipeView from './views/recipeView.js'
+import paginationView from './views/paginationView.js'
 import * as model from './model.js'
 
 
@@ -10,10 +11,15 @@ const controlSearchResults =  async function() {
   // Searching and loading results
   const query = searchView.getQuery()
   await model.loadSearchResults(query)
+  model.loadPages(model.state.search)
+  model.loadPagination(model.state.search);
 
   // Rendering results
-  resultsView.setData(model.state.search.results)
+  resultsView.setData(model.state.search.page_results)
+  paginationView.clear()
+  paginationView.setData(model.state.search)
   resultsView.render()
+  paginationView.render()
 }
 
 const controlRecipe = async function() {
@@ -27,9 +33,20 @@ const controlRecipe = async function() {
   resultsView.render()
 }
 
+const controlPagination = function() {
+  model.changePagination(paginationView.page);
+  model.loadPagination(model.state.search);
+  resultsView.setData(model.state.search.page_results)
+  paginationView.setData(model.state.search);
+  resultsView.render()
+  paginationView.render();
+}
+
 // Handling query when search form is submited
 searchView.addEventHandler(controlSearchResults)
 recipeView.addEventHandler(controlRecipe)
+paginationView.addEventHandler(controlPagination)
+
 
 const init = function() {
 }

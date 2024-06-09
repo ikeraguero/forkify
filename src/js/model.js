@@ -27,13 +27,13 @@ export const loadSearchResults = async function(query) {
                 publisher: rec.publisher
             }
         })
+        state.search.page = 1;
     } catch(err) {
         console.error(err)
     }
     }
 
 // Loading recipe
-
 export const loadRecipe = async function(id) {
     try {
         const {data} = await (await fetch(`${API_URL}${id}`)).json()
@@ -52,4 +52,28 @@ export const loadRecipe = async function(id) {
     } catch (err) {
         console.error(err)
     }
+}
+
+export const loadPages = function(searchData) {
+    console.log(searchData.results)
+    const pages = Math.trunc(searchData.results.length/searchData.results_per_page)
+    searchData.total_pages = pages;
+}
+
+export const loadPagination = function(searchData) {
+    const startIndex = (searchData.page - 1) * searchData.results_per_page;
+    const endingIndex = (searchData.results_per_page * searchData.page)
+    const pageResults = searchData.results.slice(startIndex, endingIndex)
+    console.log(pageResults)
+
+    //Loading the filtered results to the results array:
+    searchData.page_results = pageResults.map(rec=> {
+        return rec;
+    })
+
+
+}
+
+export const changePagination = function(page) {
+    state.search.page = page;
 }

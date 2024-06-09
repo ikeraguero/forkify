@@ -55,6 +55,10 @@
   }
 }
 
+.btn--hidden {
+  visibility: hidden;
+}
+
 .btn--inline {
   color: $color-primary;
   font-size: 1.3rem;
