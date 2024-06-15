@@ -5,14 +5,26 @@ import { Fraction } from 'fractional';
 class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
+    servings;
     
     addEventHandler(handler) {
         const options = ['load', 'hashchange']
         options.forEach(ev=> window.addEventListener(ev, handler))
     }
 
+    addServingsHandler(handler) {
+      const btn = document.querySelector(".btn--increase-servings");
+      btn.addEventListener('click', function(e) {
+        if(!e.target.closest(".btn--increase-servings").getAttribute("next")) {
+          this.servings = data.servings;
+          handler();
+        }
+      })
+    }
+
     setData(data) {
         this.#data = data;
+        this.servings = data.servings
     }
 
     render() {
@@ -45,12 +57,12 @@ class RecipeView {
           <span class="recipe__info-text">servings</span>
 
           <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--increase-servings" next="${this.#data.servings-1}">
               <svg>
                 <use href="${icons}#icon-minus-circle"></use>
               </svg>
             </button>
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--increase-servings" next="${this.#data.servings+1}">
               <svg>
                 <use href="${icons}#icon-plus-circle"></use>
               </svg>

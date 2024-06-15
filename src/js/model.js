@@ -77,3 +77,7 @@ export const loadPagination = function(searchData) {
 export const changePagination = function(page) {
     state.search.page = page;
 }
+
+export const updateServings = function(newServings) {
+    state.recipe.servings = newServings;
+}

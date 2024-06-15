@@ -42,13 +42,18 @@ const controlPagination = function() {
   paginationView.render();
 }
 
+const controlServings = function() {
+  model.updateServings(recipeView.servings);
+  console.log(model.recipe.servings)
+}
+
 // Handling query when search form is submited
-searchView.addEventHandler(controlSearchResults)
-recipeView.addEventHandler(controlRecipe)
-paginationView.addEventHandler(controlPagination)
-
-
 const init = function() {
+  searchView.addEventHandler(controlSearchResults)
+  recipeView.addEventHandler(controlRecipe)
+  recipeView.addEventHandler(controlServings) // Test if this is working
+  paginationView.addEventHandler(controlPagination)
+  
 }
 
 init()
