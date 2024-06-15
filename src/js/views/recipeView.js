@@ -13,17 +13,20 @@ class RecipeView {
     }
 
     addServingsHandler(handler) {
-      const btn = document.querySelector(".btn--increase-servings");
-      btn.addEventListener('click', function(e) {
-        if(!e.target.closest(".btn--increase-servings").getAttribute("next")) {
-          this.servings = data.servings;
-          handler();
-        }
+      const btns = document.querySelector(".recipe__info-buttons");
+      btns.addEventListener('click', (e) => {
+        const btn = e.target.closest(".btn--increase-servings")
+        if(!btn) return;
+        const nextServing = parseInt(e.target.closest(".btn--increase-servings").getAttribute("next"))
+        this.servings = nextServing < 1 ? this.servings : nextServing;
+        handler()
       })
     }
 
     setData(data) {
+        this.#data = '';
         this.#data = data;
+        this.servings = '';
         this.servings = data.servings
     }
 
@@ -31,8 +34,8 @@ class RecipeView {
             this.#parentEl.innerHTML = '';
             let markup = this.generateMarkup();
             this.#parentEl.insertAdjacentHTML('afterbegin', markup)
-    }
-
+          }
+          
     generateMarkup() {
         let markup = `<figure class="recipe__fig">
         <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
@@ -86,6 +89,7 @@ class RecipeView {
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
         `
+
       this.#data.ingredients.forEach(ing => {
         markup +=` <li class="recipe__ingredient">
         <svg class="recipe__icon">

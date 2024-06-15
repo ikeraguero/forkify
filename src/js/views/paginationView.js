@@ -39,7 +39,6 @@ class PaginationView {
     }
 
     generateMarkup() {
-      console.log(this.#data)
         return `<button class="btn--inline pagination__btn--prev" next='${this.#data.page-1}' >
         <svg class="search__icon">
           <use href="${icons}#icon-arrow-left"></use>

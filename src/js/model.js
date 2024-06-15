@@ -48,14 +48,12 @@ export const loadRecipe = async function(id) {
             servings: data.recipe.servings,
             source: data.recipe.source_url
         }
-        console.log(state.recipe)
     } catch (err) {
         console.error(err)
     }
 }
 
 export const loadPages = function(searchData) {
-    console.log(searchData.results)
     const pages = Math.trunc(searchData.results.length/searchData.results_per_page)
     searchData.total_pages = pages;
 }
@@ -64,7 +62,6 @@ export const loadPagination = function(searchData) {
     const startIndex = (searchData.page - 1) * searchData.results_per_page;
     const endingIndex = (searchData.results_per_page * searchData.page)
     const pageResults = searchData.results.slice(startIndex, endingIndex)
-    console.log(pageResults)
 
     //Loading the filtered results to the results array:
     searchData.page_results = pageResults.map(rec=> {
@@ -78,6 +75,11 @@ export const changePagination = function(page) {
     state.search.page = page;
 }
 
-export const updateServings = function(newServings) {
+export const updateServings = function(newServings =1) {
+    state.recipe.ingredients.forEach(ing => {
+        ing.quantity = (ing.quantity * newServings) / state.recipe.servings,
+        console.log(ing.quantity)
+    }
+    )
     state.recipe.servings = newServings;
 }

@@ -616,6 +616,7 @@ const controlRecipe = async function() {
     if (!Object.keys(_modelJs.state.recipe).length > 0) return;
     (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
     (0, _recipeViewJsDefault.default).render();
+    (0, _recipeViewJsDefault.default).addServingsHandler(controlServings);
     (0, _resultsViewJsDefault.default).render();
 };
 const controlPagination = function() {
@@ -626,11 +627,19 @@ const controlPagination = function() {
     (0, _resultsViewJsDefault.default).render();
     (0, _paginationViewJsDefault.default).render();
 };
+const controlServings = function() {
+    console.log(_modelJs.state.recipe.servings);
+    _modelJs.updateServings((0, _recipeViewJsDefault.default).servings);
+    (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
+    (0, _recipeViewJsDefault.default).render();
+    (0, _recipeViewJsDefault.default).addServingsHandler(controlServings);
+};
 // Handling query when search form is submited
-(0, _searchViewDefault.default).addEventHandler(controlSearchResults);
-(0, _recipeViewJsDefault.default).addEventHandler(controlRecipe);
-(0, _paginationViewJsDefault.default).addEventHandler(controlPagination);
-const init = function() {};
+const init = function() {
+    (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
+    (0, _recipeViewJsDefault.default).addEventHandler(controlRecipe);
+    (0, _paginationViewJsDefault.default).addEventHandler(controlPagination);
+};
 init();
 
 },{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21","./views/resultsView.js":"cSbZE","./views/recipeView.js":"l60JC","./views/paginationView.js":"6z7bi"}],"49tUX":[function(require,module,exports) {
@@ -2510,6 +2519,7 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadPages", ()=>loadPages);
 parcelHelpers.export(exports, "loadPagination", ()=>loadPagination);
 parcelHelpers.export(exports, "changePagination", ()=>changePagination);
+parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 var _configJs = require("./config.js");
 const state = {
     recipe: [],
@@ -2552,13 +2562,11 @@ const loadRecipe = async function(id) {
             servings: data.recipe.servings,
             source: data.recipe.source_url
         };
-        console.log(state.recipe);
     } catch (err) {
         console.error(err);
     }
 };
 const loadPages = function(searchData) {
-    console.log(searchData.results);
     const pages = Math.trunc(searchData.results.length / searchData.results_per_page);
     searchData.total_pages = pages;
 };
@@ -2566,7 +2574,6 @@ const loadPagination = function(searchData) {
     const startIndex = (searchData.page - 1) * searchData.results_per_page;
     const endingIndex = searchData.results_per_page * searchData.page;
     const pageResults = searchData.results.slice(startIndex, endingIndex);
-    console.log(pageResults);
     //Loading the filtered results to the results array:
     searchData.page_results = pageResults.map((rec)=>{
         return rec;
@@ -2574,6 +2581,12 @@ const loadPagination = function(searchData) {
 };
 const changePagination = function(page) {
     state.search.page = page;
+};
+const updateServings = function(newServings = 1) {
+    state.recipe.ingredients.forEach((ing)=>{
+        ing.quantity = ing.quantity * newServings / state.recipe.servings, console.log(ing.quantity);
+    });
+    state.recipe.servings = newServings;
 };
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
@@ -2685,6 +2698,7 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
+    servings;
     addEventHandler(handler) {
         const options = [
             "load",
@@ -2692,8 +2706,21 @@ class RecipeView {
         ];
         options.forEach((ev)=>window.addEventListener(ev, handler));
     }
+    addServingsHandler(handler) {
+        const btns = document.querySelector(".recipe__info-buttons");
+        btns.addEventListener("click", (e)=>{
+            const btn = e.target.closest(".btn--increase-servings");
+            if (!btn) return;
+            const nextServing = parseInt(e.target.closest(".btn--increase-servings").getAttribute("next"));
+            this.servings = nextServing < 1 ? this.servings : nextServing;
+            handler();
+        });
+    }
     setData(data) {
+        this.#data = "";
         this.#data = data;
+        this.servings = "";
+        this.servings = data.servings;
     }
     render() {
         this.#parentEl.innerHTML = "";
@@ -2724,12 +2751,12 @@ class RecipeView {
           <span class="recipe__info-text">servings</span>
 
           <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--increase-servings" next="${this.#data.servings - 1}">
               <svg>
                 <use href="${(0, _iconsSvgDefault.default)}#icon-minus-circle"></use>
               </svg>
             </button>
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--increase-servings" next="${this.#data.servings + 1}">
               <svg>
                 <use href="${(0, _iconsSvgDefault.default)}#icon-plus-circle"></use>
               </svg>
@@ -3088,7 +3115,6 @@ class PaginationView {
         if (this.page == this.#data.total_pages - 1) nextButton.classList.add("btn--hidden");
     }
     generateMarkup() {
-        console.log(this.#data);
         return `<button class="btn--inline pagination__btn--prev" next='${this.#data.page - 1}' >
         <svg class="search__icon">
           <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
