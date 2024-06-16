@@ -4,6 +4,7 @@
   import resultsView from './views/resultsView.js'
   import recipeView from './views/recipeView.js'
   import paginationView from './views/paginationView.js'
+  import bookmarksView from './views/bookmarksView.js'
   import * as model from './model.js'
 
 
@@ -29,8 +30,7 @@
     // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
     if(!Object.keys(model.state.recipe).length > 0) return
     recipeView.setData(model.state.recipe)
-    recipeView.render()
-    recipeView.addServingsHandler(controlServings)
+    recipeView.update(controlServings, controlBookmarks)
     resultsView.render()
     
   }
@@ -48,8 +48,14 @@
     console.log(model.state.recipe.servings)
     model.updateServings(recipeView.servings);
     recipeView.setData(model.state.recipe)
-    recipeView.render()
-    recipeView.addServingsHandler(controlServings)
+    recipeView.update(controlServings, controlBookmarks)
+  }
+
+  const controlBookmarks = function() {
+    if(model.state.bookmarks.includes(model.state.recipe)) return;
+    model.addBookmark(model.state.recipe)
+    bookmarksView.setData(model.state.bookmarks);
+    bookmarksView.render()
   }
 
   // Handling query when search form is submited

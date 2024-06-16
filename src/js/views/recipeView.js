@@ -7,6 +7,13 @@ class RecipeView {
     #data;
     servings;
     
+    update(servingsHandler, bookmarksHandler) {
+      this.render();
+      this.addServingsHandler(servingsHandler);
+      this.addBookmarkHandler(bookmarksHandler)
+
+    }
+  
     addEventHandler(handler) {
         const options = ['load', 'hashchange']
         options.forEach(ev=> window.addEventListener(ev, handler))
@@ -19,6 +26,13 @@ class RecipeView {
         if(!btn) return;
         const nextServing = parseInt(e.target.closest(".btn--increase-servings").getAttribute("next"))
         this.servings = nextServing < 1 ? this.servings : nextServing;
+        handler()
+      })
+    }
+
+    addBookmarkHandler(handler) {
+      const bookmarkBtn = document.querySelector(".bookmark-btn")
+      bookmarkBtn.addEventListener("click", function() {
         handler()
       })
     }
@@ -75,12 +89,12 @@ class RecipeView {
 
         <div class="recipe__user-generated">
           <svg>
-            <use href="src/img/icons.svg#icon-user"></use>
+            <use href="${icons}#icon-user"></use>
           </svg>
         </div>
-        <button class="btn--round">
+        <button class="btn--round bookmark-btn">
           <svg class="">
-            <use href="${icons}#icon-bookmark-fill"></use>
+            <use href="${icons}#icon-bookmark${this.#data.isBookmarked ? '-fill' : ''}"></use>
           </svg>
         </button>
       </div>

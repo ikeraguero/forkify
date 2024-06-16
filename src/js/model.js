@@ -9,7 +9,9 @@ export const state = {
         results: [],
         results_per_page: RESULTS_PER_PAGE,
         page: 1
-    }
+    },
+
+    bookmarks: []
 }
 
 
@@ -48,9 +50,18 @@ export const loadRecipe = async function(id) {
             servings: data.recipe.servings,
             source: data.recipe.source_url
         }
+
+        const curRecipeId = window.location.hash.slice(1)
+        const isBookmarked = state.bookmarks.some(book =>
+            book.id == curRecipeId
+        )
+
+        state.recipe.isBookmarked = isBookmarked ? true : false
+        console.log(state.recipe)
     } catch (err) {
         console.error(err)
     }
+    
 }
 
 export const loadPages = function(searchData) {
@@ -82,4 +93,8 @@ export const updateServings = function(newServings =1) {
     }
     )
     state.recipe.servings = newServings;
+}
+
+export const addBookmark = function(recipe) {
+    state.bookmarks.unshift(recipe)
 }
