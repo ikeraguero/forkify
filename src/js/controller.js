@@ -52,8 +52,11 @@
   }
 
   const controlBookmarks = function() {
-    if(model.state.bookmarks.includes(model.state.recipe)) return;
-    model.addBookmark(model.state.recipe)
+    if(model.state.recipe.isBookmarked){
+      model.deleteBookmark()
+    } else {
+      model.addBookmark(model.state.recipe)
+    };
     bookmarksView.setData(model.state.bookmarks);
     bookmarksView.render()
   }

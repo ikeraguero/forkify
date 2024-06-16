@@ -55,7 +55,7 @@ export const loadRecipe = async function(id) {
         const isBookmarked = state.bookmarks.some(book =>
             book.id == curRecipeId
         )
-
+        
         state.recipe.isBookmarked = isBookmarked ? true : false
         console.log(state.recipe)
     } catch (err) {
@@ -97,4 +97,20 @@ export const updateServings = function(newServings =1) {
 
 export const addBookmark = function(recipe) {
     state.bookmarks.unshift(recipe)
+    state.recipe.isBookmarked = true;
+    console.log(state.recipe)
+
+}
+
+export const deleteBookmark = function() {
+    const curRecipeId = window.location.hash.slice(1)
+    let index; 
+    state.bookmarks.forEach((book, i)=> {
+        if(book.id == curRecipeId) {
+            index = i;
+        }        
+    })
+    state.bookmarks.splice(index, 1);
+    state.recipe.isBookmarked = false;
+    console.log(state.recipe)
 }
