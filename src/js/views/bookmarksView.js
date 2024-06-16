@@ -4,6 +4,7 @@ class BookmarksView {
 
     setData(data) {
         this.#data = data
+        this.render()
     }
 
     render() {

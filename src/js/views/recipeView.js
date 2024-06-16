@@ -6,13 +6,6 @@ class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
     servings;
-    
-    update(servingsHandler, bookmarksHandler) {
-      this.render();
-      this.addServingsHandler(servingsHandler);
-      this.addBookmarkHandler(bookmarksHandler)
-
-    }
   
     addEventHandler(handler) {
         const options = ['load', 'hashchange']
@@ -32,7 +25,7 @@ class RecipeView {
 
     addBookmarkHandler(handler) {
       const bookmarkBtn = document.querySelector(".bookmark-btn")
-      bookmarkBtn.addEventListener("click", function() {
+      bookmarkBtn.addEventListener("click", () => {
         handler()
       })
     }

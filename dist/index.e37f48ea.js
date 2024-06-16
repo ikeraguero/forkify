@@ -617,7 +617,7 @@ const controlRecipe = async function() {
     // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
     if (!Object.keys(_modelJs.state.recipe).length > 0) return;
     (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
-    (0, _recipeViewJsDefault.default).update(controlServings, controlBookmarks);
+    updateDOM();
     (0, _resultsViewJsDefault.default).render();
 };
 const controlPagination = function() {
@@ -632,16 +632,23 @@ const controlServings = function() {
     console.log(_modelJs.state.recipe.servings);
     _modelJs.updateServings((0, _recipeViewJsDefault.default).servings);
     (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
-    (0, _recipeViewJsDefault.default).update(controlServings, controlBookmarks);
+    ///
+    updateDOM();
 };
 const controlBookmarks = function() {
     if (_modelJs.state.recipe.isBookmarked) _modelJs.deleteBookmark();
     else _modelJs.addBookmark(_modelJs.state.recipe);
     (0, _bookmarksViewJsDefault.default).setData(_modelJs.state.bookmarks);
-    (0, _bookmarksViewJsDefault.default).render();
+    updateDOM();
+};
+const updateDOM = function() {
+    (0, _recipeViewJsDefault.default).render();
+    (0, _recipeViewJsDefault.default).addServingsHandler(controlServings);
+    (0, _recipeViewJsDefault.default).addBookmarkHandler(controlBookmarks);
 };
 // Handling query when search form is submited
 const init = function() {
+    (0, _bookmarksViewJsDefault.default).setData(_modelJs.state.bookmarks);
     (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
     (0, _recipeViewJsDefault.default).addEventHandler(controlRecipe);
     (0, _paginationViewJsDefault.default).addEventHandler(controlPagination);
@@ -2526,6 +2533,7 @@ parcelHelpers.export(exports, "loadPages", ()=>loadPages);
 parcelHelpers.export(exports, "loadPagination", ()=>loadPagination);
 parcelHelpers.export(exports, "changePagination", ()=>changePagination);
 parcelHelpers.export(exports, "updateServings", ()=>updateServings);
+parcelHelpers.export(exports, "persistBookmarks", ()=>persistBookmarks);
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
 parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
 var _configJs = require("./config.js");
@@ -2601,10 +2609,14 @@ const updateServings = function(newServings = 1) {
     });
     state.recipe.servings = newServings;
 };
+const persistBookmarks = function() {
+    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
 const addBookmark = function(recipe) {
     state.bookmarks.unshift(recipe);
     state.recipe.isBookmarked = true;
     console.log(state.recipe);
+    persistBookmarks();
 };
 const deleteBookmark = function() {
     const curRecipeId = window.location.hash.slice(1);
@@ -2615,7 +2627,14 @@ const deleteBookmark = function() {
     state.bookmarks.splice(index, 1);
     state.recipe.isBookmarked = false;
     console.log(state.recipe);
+    persistBookmarks();
 };
+const init = function() {
+    const storage = localStorage.getItem("bookmarks");
+    if (storage) state.bookmarks = JSON.parse(storage);
+    console.log(state.bookmarks);
+};
+init();
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -2727,11 +2746,6 @@ class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
     servings;
-    update(servingsHandler, bookmarksHandler) {
-        this.render();
-        this.addServingsHandler(servingsHandler);
-        this.addBookmarkHandler(bookmarksHandler);
-    }
     addEventHandler(handler) {
         const options = [
             "load",
@@ -2751,7 +2765,7 @@ class RecipeView {
     }
     addBookmarkHandler(handler) {
         const bookmarkBtn = document.querySelector(".bookmark-btn");
-        bookmarkBtn.addEventListener("click", function() {
+        bookmarkBtn.addEventListener("click", ()=>{
             handler();
         });
     }
@@ -3178,6 +3192,7 @@ class BookmarksView {
     #data;
     setData(data) {
         this.#data = data;
+        this.render();
     }
     render() {
         const markup = this.generateMarkup();
