@@ -36,9 +36,10 @@ class ResultsView {
 
     generateMarkup() {
         let markup = '';
+        const curRecipe = window.location.hash.slice(1)
         this.#data.forEach(rec => {
         markup += ` <li class="preview">
-        <a class="preview__link preview__link" href="#${rec.id}">
+        <a class="preview__link preview__link${curRecipe == rec.id ? '--active' : ''}" href="#${rec.id}">
           <figure class="preview__fig">
             <img src="${rec.image}" alt="Test" />
           </figure>

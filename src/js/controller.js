@@ -32,7 +32,7 @@
     recipeView.setData(model.state.recipe)
     updateDOM()
     resultsView.render()
-    
+    bookmarksView.render()
   }
 
   const controlPagination = function() {

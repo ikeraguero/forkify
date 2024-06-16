@@ -19,9 +19,10 @@ class BookmarksView {
 
     generateMarkup() {
         let markup = '';
+        const curRecipe = window.location.hash.slice(1)
         this.#data.forEach(book => {
             markup += ` <li class="preview">
-        <a class="preview__link preview__link" href="#${book.id}">
+        <a class="preview__link preview__link${curRecipe == book.id ? '--active' : ''}" href="#${book.id}">
           <figure class="preview__fig">
             <img src="${book.image}" alt="Test" />
           </figure>
