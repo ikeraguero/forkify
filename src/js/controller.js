@@ -9,18 +9,24 @@
 
 
   const controlSearchResults =  async function() {
-    // Searching and loading results
-    const query = searchView.getQuery()
-    await model.loadSearchResults(query)
-    model.loadPages(model.state.search)
-    model.loadPagination(model.state.search);
-
-    // Rendering results
-    resultsView.setData(model.state.search.page_results)
-    paginationView.clear()
-    paginationView.setData(model.state.search)
-    resultsView.render()
-    paginationView.render()
+    try {
+      // Searching and loading results
+      const query = searchView.getQuery()
+      await model.loadSearchResults(query)
+      model.loadPages(model.state.search)
+      model.loadPagination(model.state.search);
+      
+      // Rendering results
+      resultsView.setData(model.state.search.page_results)
+      paginationView.clear()
+      paginationView.setData(model.state.search)
+      resultsView.render()
+      paginationView.render()
+      console.log('a')
+    } catch(err) {
+      console.error(err)
+      resultsView.renderError()
+    }
   }
 
   const controlRecipe = async function() {

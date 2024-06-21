@@ -52,12 +52,38 @@ class ResultsView {
         });
       return markup
     }
-    /*
+    /*renderError() {
+      console.log('A')
+      const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    }
     <div class="preview__user-generated">
         <svg>
           <use href="${icons}#icon-user"></use>
         </svg>
     </div> */
+
+    renderError() {
+      console.log('A')
+      const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    }
 }
 
 export default new ResultsView;

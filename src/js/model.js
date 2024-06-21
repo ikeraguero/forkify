@@ -20,7 +20,11 @@ export const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
         const results = await fetch(`${API_URL}?search=${query}`)
+        if(!results.ok) throw new Error();
+
         const {data} = await results.json()
+        if(data.recipes.length==0) throw new Error()
+
         state.search.results = data.recipes.map(rec=> {
             return {
                 id: rec.id,
@@ -31,7 +35,7 @@ export const loadSearchResults = async function(query) {
         })
         state.search.page = 1;
     } catch(err) {
-        console.error(err)
+        throw new Error() // propagating the error to the controller
     }
     }
 

@@ -145,6 +145,8 @@ class RecipeView {
       </div>
 `
     }
+
+
 }
 
 export default new RecipeView;

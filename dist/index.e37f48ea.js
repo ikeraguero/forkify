@@ -599,17 +599,23 @@ var _bookmarksViewJs = require("./views/bookmarksView.js");
 var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 var _modelJs = require("./model.js");
 const controlSearchResults = async function() {
-    // Searching and loading results
-    const query = (0, _searchViewDefault.default).getQuery();
-    await _modelJs.loadSearchResults(query);
-    _modelJs.loadPages(_modelJs.state.search);
-    _modelJs.loadPagination(_modelJs.state.search);
-    // Rendering results
-    (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.page_results);
-    (0, _paginationViewJsDefault.default).clear();
-    (0, _paginationViewJsDefault.default).setData(_modelJs.state.search);
-    (0, _resultsViewJsDefault.default).render();
-    (0, _paginationViewJsDefault.default).render();
+    try {
+        // Searching and loading results
+        const query = (0, _searchViewDefault.default).getQuery();
+        await _modelJs.loadSearchResults(query);
+        _modelJs.loadPages(_modelJs.state.search);
+        _modelJs.loadPagination(_modelJs.state.search);
+        // Rendering results
+        (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.page_results);
+        (0, _paginationViewJsDefault.default).clear();
+        (0, _paginationViewJsDefault.default).setData(_modelJs.state.search);
+        (0, _resultsViewJsDefault.default).render();
+        (0, _paginationViewJsDefault.default).render();
+        console.log("a");
+    } catch (err) {
+        console.error(err);
+        (0, _resultsViewJsDefault.default).renderError();
+    }
 };
 const controlRecipe = async function() {
     const id = window.location.hash.slice(1);
@@ -2552,7 +2558,9 @@ const loadSearchResults = async function(query) {
     try {
         state.search.query = query;
         const results = await fetch(`${(0, _configJs.API_URL)}?search=${query}`);
+        if (!results.ok) throw new Error();
         const { data } = await results.json();
+        if (data.recipes.length == 0) throw new Error();
         state.search.results = data.recipes.map((rec)=>{
             return {
                 id: rec.id,
@@ -2563,7 +2571,8 @@ const loadSearchResults = async function(query) {
         });
         state.search.page = 1;
     } catch (err) {
-        console.error(err);
+        throw new Error() // propagating the error to the controller
+        ;
     }
 };
 const loadRecipe = async function(id) {
@@ -2695,6 +2704,36 @@ class ResultsView {
       </li>`;
         });
         return markup;
+    }
+    /*renderError() {
+      console.log('A')
+      const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    }
+    <div class="preview__user-generated">
+        <svg>
+          <use href="${icons}#icon-user"></use>
+        </svg>
+    </div> */ renderError() {
+        console.log("A");
+        const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `;
+        this.#parentEl.innerHTML = "";
+        this.#parentEl.insertAdjacentHTML("afterbegin", markup);
     }
 }
 exports.default = new ResultsView;
