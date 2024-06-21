@@ -30,16 +30,21 @@
   }
 
   const controlRecipe = async function() {
-    const id = window.location.hash.slice(1)
-    await model.loadRecipe(id)
+    try {
 
-    // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
-    if(!Object.keys(model.state.recipe).length > 0) return
-    recipeView.setData(model.state.recipe)
-    updateDOM()
-    resultsView.render()
-    bookmarksView.render()
-  }
+      const id = window.location.hash.slice(1)
+      await model.loadRecipe(id)
+      
+      // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
+      if(!Object.keys(model.state.recipe).length > 0) return
+      recipeView.setData(model.state.recipe)
+      updateDOM()
+      resultsView.render()
+      bookmarksView.render()
+    } catch(err) {
+      recipeView.renderError()
+    }
+    }
 
   const controlPagination = function() {
     model.changePagination(paginationView.page);

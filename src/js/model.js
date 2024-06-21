@@ -63,6 +63,7 @@ export const loadRecipe = async function(id) {
         state.recipe.isBookmarked = isBookmarked ? true : false
         console.log(state.recipe)
     } catch (err) {
+        throw new Error()
         console.error(err)
     }
     
