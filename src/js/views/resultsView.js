@@ -11,6 +11,9 @@ class ResultsView {
     }
 
     render() {
+      if(this.#parentEl.querySelector(".error")) {
+        this.#parentEl.querySelector(".error").remove()
+      }
         this.#container.innerHTML = '';
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup())
 
@@ -81,7 +84,7 @@ class ResultsView {
       </div>
       <p>No recipes found for your query. Please try again!</p>
     </div> `
-    this.#parentEl.innerHTML = '';
+    this.#container.innerHTML = '';
     this.#parentEl.insertAdjacentHTML("afterbegin", markup)
     }
 }

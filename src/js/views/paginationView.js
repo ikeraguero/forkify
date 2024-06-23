@@ -26,8 +26,8 @@ class PaginationView {
     render() {
         const markup = this.generateMarkup()
         this.#parentEl.insertAdjacentHTML('beforeend', markup);
-        const prevButton = document.querySelector(".pagination__btn--prev");
-        const nextButton = document.querySelector(".pagination__btn--next")
+        const prevButton = this.#parentEl.querySelector(".pagination__btn--prev");
+        const nextButton = this.#parentEl.querySelector(".pagination__btn--next")
 
         if(this.page == 1) {
           prevButton.classList.add("btn--hidden")
@@ -39,7 +39,8 @@ class PaginationView {
     }
 
     generateMarkup() {
-        return `<button class="btn--inline pagination__btn--prev" next='${this.#data.page-1}' >
+        return `
+        <button class="btn--inline pagination__btn--prev" next='${this.#data.page-1}' >
         <svg class="search__icon">
           <use href="${icons}#icon-arrow-left"></use>
         </svg>

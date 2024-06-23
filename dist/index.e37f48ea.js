@@ -606,52 +606,46 @@ const controlSearchResults = async function() {
         _modelJs.loadPages(_modelJs.state.search);
         _modelJs.loadPagination(_modelJs.state.search);
         // Rendering results
-        (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.page_results);
-        (0, _paginationViewJsDefault.default).clear();
-        (0, _paginationViewJsDefault.default).setData(_modelJs.state.search);
-        (0, _resultsViewJsDefault.default).render();
-        (0, _paginationViewJsDefault.default).render();
-        console.log("a");
+        updateResults();
+        console.log("Teste");
     } catch (err) {
         console.error(err);
         (0, _resultsViewJsDefault.default).renderError();
     }
 };
 const controlRecipe = async function() {
-    const id = window.location.hash.slice(1);
-    await _modelJs.loadRecipe(id);
-    // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
-    if (!Object.keys(_modelJs.state.recipe).length > 0) return;
-    (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
-    updateDOM();
-    (0, _resultsViewJsDefault.default).render();
-    (0, _bookmarksViewJsDefault.default).render();
+    try {
+        const id = window.location.hash.slice(1);
+        await _modelJs.loadRecipe(id);
+        // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
+        if (!Object.keys(_modelJs.state.recipe).length > 0) return;
+        (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
+        updateRecipe();
+        updateResults();
+        (0, _bookmarksViewJsDefault.default).render();
+    } catch (err) {
+        (0, _recipeViewJsDefault.default).renderError();
+    }
 };
 const controlPagination = function() {
     _modelJs.changePagination((0, _paginationViewJsDefault.default).page);
     _modelJs.loadPagination(_modelJs.state.search);
     (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.page_results);
     (0, _paginationViewJsDefault.default).setData(_modelJs.state.search);
-    (0, _resultsViewJsDefault.default).render();
-    (0, _paginationViewJsDefault.default).render();
+    updateResults();
 };
 const controlServings = function() {
     console.log(_modelJs.state.recipe.servings);
     _modelJs.updateServings((0, _recipeViewJsDefault.default).servings);
     (0, _recipeViewJsDefault.default).setData(_modelJs.state.recipe);
     ///
-    updateDOM();
+    updateRecipe();
 };
 const controlBookmarks = function() {
     if (_modelJs.state.recipe.isBookmarked) _modelJs.deleteBookmark();
     else _modelJs.addBookmark(_modelJs.state.recipe);
     (0, _bookmarksViewJsDefault.default).setData(_modelJs.state.bookmarks);
-    updateDOM();
-};
-const updateDOM = function() {
-    (0, _recipeViewJsDefault.default).render();
-    (0, _recipeViewJsDefault.default).addServingsHandler(controlServings);
-    (0, _recipeViewJsDefault.default).addBookmarkHandler(controlBookmarks);
+    updateRecipe();
 };
 // Handling query when search form is submited
 const init = function() {
@@ -661,6 +655,19 @@ const init = function() {
     (0, _paginationViewJsDefault.default).addEventHandler(controlPagination);
 };
 init();
+// Update functions
+const updateResults = function() {
+    (0, _resultsViewJsDefault.default).setData(_modelJs.state.search.page_results);
+    (0, _paginationViewJsDefault.default).clear();
+    (0, _paginationViewJsDefault.default).setData(_modelJs.state.search);
+    (0, _resultsViewJsDefault.default).render();
+    (0, _paginationViewJsDefault.default).render();
+};
+const updateRecipe = function() {
+    (0, _recipeViewJsDefault.default).render();
+    (0, _recipeViewJsDefault.default).addServingsHandler(controlServings);
+    (0, _recipeViewJsDefault.default).addBookmarkHandler(controlBookmarks);
+};
 
 },{"core-js/modules/web.immediate.js":"49tUX","regenerator-runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/searchView":"9OQAM","./model.js":"Y4A21","./views/resultsView.js":"cSbZE","./views/recipeView.js":"l60JC","./views/paginationView.js":"6z7bi","./views/bookmarksView.js":"4Lqzq"}],"49tUX":[function(require,module,exports) {
 "use strict";
@@ -2594,7 +2601,7 @@ const loadRecipe = async function(id) {
         state.recipe.isBookmarked = isBookmarked ? true : false;
         console.log(state.recipe);
     } catch (err) {
-        console.error(err);
+        throw new Error();
     }
 };
 const loadPages = function(searchData) {
@@ -2667,6 +2674,7 @@ class ResultsView {
         this.#data = data;
     }
     render() {
+        if (this.#parentEl.querySelector(".error")) this.#parentEl.querySelector(".error").remove();
         this.#container.innerHTML = "";
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup());
     /* Trying to add the preview--active class to the current recipe.
@@ -2732,7 +2740,7 @@ class ResultsView {
       </div>
       <p>No recipes found for your query. Please try again!</p>
     </div> `;
-        this.#parentEl.innerHTML = "";
+        this.#container.innerHTML = "";
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
     }
 }
@@ -3203,13 +3211,14 @@ class PaginationView {
     render() {
         const markup = this.generateMarkup();
         this.#parentEl.insertAdjacentHTML("beforeend", markup);
-        const prevButton = document.querySelector(".pagination__btn--prev");
-        const nextButton = document.querySelector(".pagination__btn--next");
+        const prevButton = this.#parentEl.querySelector(".pagination__btn--prev");
+        const nextButton = this.#parentEl.querySelector(".pagination__btn--next");
         if (this.page == 1) prevButton.classList.add("btn--hidden");
         if (this.page == this.#data.total_pages - 1) nextButton.classList.add("btn--hidden");
     }
     generateMarkup() {
-        return `<button class="btn--inline pagination__btn--prev" next='${this.#data.page - 1}' >
+        return `
+        <button class="btn--inline pagination__btn--prev" next='${this.#data.page - 1}' >
         <svg class="search__icon">
           <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
         </svg>

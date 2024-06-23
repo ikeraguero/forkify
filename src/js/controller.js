@@ -17,12 +17,9 @@
       model.loadPagination(model.state.search);
       
       // Rendering results
-      resultsView.setData(model.state.search.page_results)
-      paginationView.clear()
-      paginationView.setData(model.state.search)
-      resultsView.render()
-      paginationView.render()
-      console.log('a')
+
+      updateResults()
+      console.log('Teste')
     } catch(err) {
       console.error(err)
       resultsView.renderError()
@@ -37,9 +34,10 @@
       
       // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
       if(!Object.keys(model.state.recipe).length > 0) return
+
       recipeView.setData(model.state.recipe)
-      updateDOM()
-      resultsView.render()
+      updateRecipe()
+      updateResults()
       bookmarksView.render()
     } catch(err) {
       recipeView.renderError()
@@ -51,8 +49,7 @@
     model.loadPagination(model.state.search);
     resultsView.setData(model.state.search.page_results)
     paginationView.setData(model.state.search);
-    resultsView.render()
-    paginationView.render();
+    updateResults()
   }
 
   const controlServings = function() {
@@ -60,7 +57,7 @@
     model.updateServings(recipeView.servings);
     recipeView.setData(model.state.recipe)
     ///
-    updateDOM()
+    updateRecipe()
   }
 
   const controlBookmarks = function() {
@@ -70,15 +67,10 @@
       model.addBookmark(model.state.recipe)
     };
     bookmarksView.setData(model.state.bookmarks);
-    updateDOM()
+    updateRecipe()
     
   }
 
-  const updateDOM = function() {
-    recipeView.render()
-    recipeView.addServingsHandler(controlServings)
-    recipeView.addBookmarkHandler(controlBookmarks)
-  }
   // Handling query when search form is submited
   const init = function() {
     bookmarksView.setData(model.state.bookmarks);
@@ -88,3 +80,20 @@
   }
 
   init()
+
+ // Update functions
+ 
+ 
+ const updateResults = function() {
+  resultsView.setData(model.state.search.page_results)
+  paginationView.clear()
+  paginationView.setData(model.state.search)
+  resultsView.render()
+  paginationView.render()
+}
+
+const updateRecipe = function() {
+  recipeView.render()
+  recipeView.addServingsHandler(controlServings)
+  recipeView.addBookmarkHandler(controlBookmarks)
+}
