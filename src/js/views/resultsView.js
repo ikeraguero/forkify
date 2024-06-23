@@ -87,6 +87,7 @@ class ResultsView {
     </div> `
     this.#container.innerHTML = '';
     this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    this.#parentEl.querySelector(".spinner")?.remove()
     }
 
     renderSpinner() {
@@ -97,8 +98,8 @@ class ResultsView {
     </div> `
     this.#container.innerHTML = '';
     this.#parentEl.insertAdjacentHTML("afterbegin", spinner)
-    console.log('b')
-    }
+    this.#parentEl.querySelector(".error")?.remove()
+  }
 }
 
 export default new ResultsView;

@@ -2758,6 +2758,7 @@ class ResultsView {
     </div> `;
         this.#container.innerHTML = "";
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
+        this.#parentEl.querySelector(".spinner")?.remove();
     }
     renderSpinner() {
         const spinner = `<div class="spinner">
@@ -2767,7 +2768,7 @@ class ResultsView {
     </div> `;
         this.#container.innerHTML = "";
         this.#parentEl.insertAdjacentHTML("afterbegin", spinner);
-        console.log("b");
+        this.#parentEl.querySelector(".error")?.remove();
     }
 }
 exports.default = new ResultsView;
