@@ -1,7 +1,7 @@
 9684
 53/home/ikeraguero/forkify/forkify-flowchart-part-2.png1717026050736828680 0
-51/home/ikeraguero/forkify/dist/index.e37f48ea.js.map1719161949362430753 0
-40/home/ikeraguero/forkify/dist/index.html1719159870390913558 0
+51/home/ikeraguero/forkify/dist/index.e37f48ea.js.map1719163136643299771 0
+40/home/ikeraguero/forkify/dist/index.html1719162989005234218 0
 53/home/ikeraguero/forkify/dist/forkify.3464ddca.js.map1717033400548968742 0
 51/home/ikeraguero/forkify/dist/index.62406edb.js.map1717033400479971686 0
 47/home/ikeraguero/forkify/dist/index.62406edb.js1717033400476971814 0
@@ -643,7 +643,7 @@
 79/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.aggregate-error.js1717033607307132559 0
 75/home/ikeraguero/forkify/node_modules/core-js/modules/es.aggregate-error.js1717033607230135854 0
 84/home/ikeraguero/forkify/node_modules/core-js/modules/es.typed-array.reduce-right.js1717033607298132944 0
-48/home/ikeraguero/forkify/dist/icons.21bad73c.svg1719159870360903891 0
+48/home/ikeraguero/forkify/dist/icons.21bad73c.svg1719162988951232966 0
 77/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.string.cooked.js1717033607348130804 0
 80/home/ikeraguero/forkify/node_modules/core-js/modules/es.object.define-setter.js1717033607258134655 0
 85/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.symbol.custom-matcher.js1717033607350130718 0
@@ -726,7 +726,7 @@
 73/home/ikeraguero/forkify/node_modules/core-js/modules/es.reflect.apply.js1717033607269134185 0
 82/home/ikeraguero/forkify/node_modules/css-tree/cjs/definition-syntax/tokenizer.cjs1717032292870134645 0
 78/home/ikeraguero/forkify/node_modules/core-js/modules/es.array-buffer.slice.js1717033607231135811 0
-50/home/ikeraguero/forkify/dist/favicon.8b2f57bf.png1719159870385911947 0
+50/home/ikeraguero/forkify/dist/favicon.8b2f57bf.png1719162988952232989 0
 74/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.json.parse.js1717033607324131831 0
 86/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.promise.with-resolvers.js1717033607337131275 0
 76/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.iterator.map.js1717033607322131917 0
@@ -973,7 +973,7 @@
 74/home/ikeraguero/forkify/node_modules/core-js/full/object/is-extensible.js1717033607563121603 0
 89/home/ikeraguero/forkify/node_modules/core-js/full/object/get-own-property-descriptors.js1717033607468125669 0
 69/home/ikeraguero/forkify/node_modules/core-js/full/object/group-by.js1717033607483125027 0
-52/home/ikeraguero/forkify/dist/index.f7626f62.css.map1719159870422923871 0
+52/home/ikeraguero/forkify/dist/index.f7626f62.css.map1719162989019234541 0
 70/home/ikeraguero/forkify/node_modules/core-js/full/object/to-string.js1717033607836109920 0
 77/home/ikeraguero/forkify/node_modules/core-js/full/object/set-prototype-of.js1717033607740114028 0
 67/home/ikeraguero/forkify/node_modules/core-js/full/object/values.js1717033607879108080 0
@@ -2361,7 +2361,7 @@
 63/home/ikeraguero/forkify/node_modules/core-js/features/weak-set1717033607664117281 1
 70/home/ikeraguero/forkify/node_modules/core-js/features/bigint/range.js1717033607692116082 0
 70/home/ikeraguero/forkify/node_modules/core-js/features/bigint/index.js1717033607527123144 0
-29/home/ikeraguero/forkify/dist1719161949363430694 1
+29/home/ikeraguero/forkify/dist1719163136644299450 1
 64/home/ikeraguero/forkify/node_modules/core-js/full/array/some.js1717033607759113215 0
 61/home/ikeraguero/forkify/node_modules/core-js/features/bigint1717033607692116082 1
 71/home/ikeraguero/forkify/node_modules/core-js/features/date/get-year.js1717033607474125412 0
@@ -2830,7 +2830,7 @@
 56/home/ikeraguero/forkify/node_modules/nullthrows/LICENSE1717032293127124445 0
 64/home/ikeraguero/forkify/node_modules/ordered-binary/.nyc_output1717032292187161749 1
 74/home/ikeraguero/forkify/node_modules/htmlnano/lib/modules/mergeStyles.cjs1717032292588145836 0
-48/home/ikeraguero/forkify/dist/index.f7626f62.css1719159870420923226 0
+48/home/ikeraguero/forkify/dist/index.f7626f62.css1719162989013234403 0
 59/home/ikeraguero/forkify/node_modules/ordered-binary/assets1717032292259158892 1
 70/home/ikeraguero/forkify/node_modules/msgpackr-extract/src/extract.cpp1717032291918172423 0
 103/home/ikeraguero/forkify/node_modules/@parcel/optimizer-htmlnano/node_modules/svgo/dist/svgo.browser.js1717032296594986768 0
@@ -4205,7 +4205,7 @@
 90/home/ikeraguero/forkify/node_modules/@parcel/optimizer-htmlnano/node_modules/mdn-data/css1717032292483150003 1
 75/home/ikeraguero/forkify/node_modules/core-js/internals/weak-set-helpers.js1717033607880108037 0
 113/home/ikeraguero/forkify/node_modules/@parcel/optimizer-htmlnano/node_modules/svgo/plugins/cleanupListOfValues.js1717032296489990937 0
-47/home/ikeraguero/forkify/dist/logo.726d37a8.png1719159870354901957 0
+47/home/ikeraguero/forkify/dist/logo.726d37a8.png1719162988818229883 0
 73/home/ikeraguero/forkify/node_modules/core-js/internals/engine-is-deno.js1717033607215136496 0
 73/home/ikeraguero/forkify/node_modules/@parcel/transformer-js/node_modules1717032359297484381 1
 75/home/ikeraguero/forkify/node_modules/core-js/actual/instance/trim-start.js1717033607850109321 0
@@ -4288,7 +4288,7 @@
 81/home/ikeraguero/forkify/node_modules/csso/node_modules/css-tree/dist/version.cjs1717032296311998006 0
 85/home/ikeraguero/forkify/node_modules/core-js/modules/esnext.uint8-array.to-base64.js1717033607360130290 0
 94/home/ikeraguero/forkify/node_modules/csso/node_modules/css-tree/lib/syntax/node/StyleSheet.js1717032296455992288 0
-47/home/ikeraguero/forkify/dist/index.e37f48ea.js1719161949359430931 0
+47/home/ikeraguero/forkify/dist/index.e37f48ea.js1719163136639301057 0
 68/home/ikeraguero/forkify/node_modules/core-js/internals/not-a-nan.js1717033607653117751 0
 101/home/ikeraguero/forkify/node_modules/csso/node_modules/css-tree/lib/syntax/config/parser-selector.js1717032296435993082 0
 71/home/ikeraguero/forkify/node_modules/@swc/helpers/_/_wrap_native_super1717032294069087057 1
@@ -9140,7 +9140,7 @@
 79/home/ikeraguero/forkify/node_modules/core-js/internals/object-is-extensible.js1717033607659117495 0
 105/home/ikeraguero/forkify/node_modules/@parcel/optimizer-svgo/node_modules/css-tree/lib/syntax/node/Url.js1717032293042127819 0
 107/home/ikeraguero/forkify/node_modules/@parcel/optimizer-svgo/node_modules/css-tree/lib/syntax/node/Ratio.js1717032292961131034 0
-52/home/ikeraguero/forkify/src/js/views/resultsView.js1719162540324553048 0
+52/home/ikeraguero/forkify/src/js/views/resultsView.js1719166591601961164 0
 61/home/ikeraguero/forkify/node_modules/dotenv-expand/README.md1717032291973170241 0
 115/home/ikeraguero/forkify/node_modules/@parcel/optimizer-svgo/node_modules/css-tree/lib/syntax/node/ClassSelector.js1717032292316156630 0
 77/home/ikeraguero/forkify/node_modules/csso/lib/restructure/6-restructBlock.js1717032292565146748 0

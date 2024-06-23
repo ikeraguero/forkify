@@ -85,9 +85,9 @@ class ResultsView {
       </div>
       <p>No recipes found for your query. Please try again!</p>
     </div> `
-    this.#container.innerHTML = '';
-    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
-    this.#parentEl.querySelector(".spinner")?.remove()
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup);
+    this.#parentEl.querySelector(".spinner")?.remove();
+    this.#parentEl.querySelector(".pagination").innerHTML = ''
     }
 
     renderSpinner() {

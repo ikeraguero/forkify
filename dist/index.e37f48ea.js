@@ -2756,9 +2756,9 @@ class ResultsView {
       </div>
       <p>No recipes found for your query. Please try again!</p>
     </div> `;
-        this.#container.innerHTML = "";
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
         this.#parentEl.querySelector(".spinner")?.remove();
+        this.#parentEl.querySelector(".pagination").innerHTML = "";
     }
     renderSpinner() {
         const spinner = `<div class="spinner">
@@ -2773,7 +2773,7 @@ class ResultsView {
 }
 exports.default = new ResultsView;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../img/icons.svg":"cMpiy"}],"cMpiy":[function(require,module,exports) {
+},{"../../img/icons.svg":"cMpiy","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cMpiy":[function(require,module,exports) {
 module.exports = require("17cff2908589362b").getBundleURL("hWUTQ") + "icons.21bad73c.svg" + "?" + Date.now();
 
 },{"17cff2908589362b":"lgJ39"}],"lgJ39":[function(require,module,exports) {
