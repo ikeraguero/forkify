@@ -1,10 +1,11 @@
+import icons from '../../img/icons.svg'
+
 class BookmarksView {
-    #parentEl = document.querySelector(".bookmarks");
+    #parentEl = document.querySelector(".bookmarks__list");
     #data
 
     setData(data) {
         this.#data = data
-        this.render()
     }
 
     render() {
@@ -35,6 +36,21 @@ class BookmarksView {
         })
 
         return markup;
+    }
+
+    renderMessage() {
+      const markup = `<div class="message">
+      <div>
+        <svg>
+          <use href="${icons}#icon-smile"></use>
+        </svg>
+      </div>
+      <p>
+        No bookmarks yet. Find a nice recipe and bookmark it :)
+      </p>
+    </div>`
+    this.#parentEl.innerHTML = ''
+    this.#parentEl.insertAdjacentHTML("beforeend", markup)
     }
 }
 

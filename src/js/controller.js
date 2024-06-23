@@ -20,7 +20,6 @@
       // Rendering results
 
       updateResults()
-      console.log('Teste')
     } catch(err) {
       console.error(err)
       resultsView.renderError()
@@ -28,6 +27,9 @@
   }
 
   const controlRecipe = async function(ev) {
+    if(model.state.bookmarks.length === 0)  {
+      bookmarksView.renderMessage()
+    }
     try {
       if(ev==='load') { 
         recipeView.renderMessage()
@@ -42,6 +44,10 @@
       recipeView.setData(model.state.recipe)
       updateRecipe()
       updateResults()
+      if(model.state.bookmarks.length === 0)  {
+        bookmarksView.renderMessage()
+        return;
+      }
       bookmarksView.render()
     } catch(err) {
       console.log(err)
@@ -57,7 +63,6 @@
   }
 
   const controlServings = function() {
-    console.log(model.state.recipe.servings)
     model.updateServings(recipeView.servings);
     recipeView.setData(model.state.recipe)
     ///
@@ -71,8 +76,13 @@
       model.addBookmark(model.state.recipe)
     };
     bookmarksView.setData(model.state.bookmarks);
+    if(model.state.bookmarks.length === 0) {
+      bookmarksView.renderMessage();
+      updateRecipe();
+      return;
+    }
+    bookmarksView.render()
     updateRecipe()
-    
   }
 
   // Handling query when search form is submited

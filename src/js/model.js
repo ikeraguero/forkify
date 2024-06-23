@@ -93,9 +93,7 @@ export const changePagination = function(page) {
 
 export const updateServings = function(newServings =1) {
     state.recipe.ingredients.forEach(ing => {
-        ing.quantity = (ing.quantity * newServings) / state.recipe.servings,
-        console.log(ing.quantity)
-    }
+        ing.quantity = (ing.quantity * newServings) / state.recipe.servings    }
     )
     state.recipe.servings = newServings;
 }
@@ -107,7 +105,6 @@ export const persistBookmarks = function() {
 export const addBookmark = function(recipe) {
     state.bookmarks.unshift(recipe)
     state.recipe.isBookmarked = true;
-    console.log(state.recipe)
 
     persistBookmarks()
 }
@@ -122,14 +119,12 @@ export const deleteBookmark = function() {
     })
     state.bookmarks.splice(index, 1);
     state.recipe.isBookmarked = false;
-    console.log(state.recipe)
     persistBookmarks();
 }
 
 const init = function() {
     const storage = localStorage.getItem("bookmarks")
     if(storage) state.bookmarks = JSON.parse(storage)
-    console.log(state.bookmarks)
 }
 
 init()
