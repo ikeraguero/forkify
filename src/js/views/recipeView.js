@@ -5,11 +5,21 @@ import { Fraction } from 'fractional';
 class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
+    #message = `<div class="message">
+    <div>
+      <svg>
+        <use href="${icons}#icon-smile"></use>
+      </svg>
+    </div>
+    <p>Start by searching for a recipe or an ingredient. Have fun!</p>
+  </div>`
     servings;
   
     addEventHandler(handler) {
         const options = ['load', 'hashchange']
-        options.forEach(ev=> window.addEventListener(ev, handler))
+        options.forEach(ev=> window.addEventListener(ev, function() {
+          handler(ev)
+        }))
     }
 
     addServingsHandler(handler) {
@@ -144,6 +154,35 @@ class RecipeView {
         <p>Start by searching for a recipe or an ingredient. Have fun!</p>
       </div>
 `
+    }
+
+  /*  renderError() {
+      console.log('A')
+      const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    } */
+
+    renderMessage() {
+      this.#parentEl.innerHTML = '';
+      this.#parentEl.insertAdjacentHTML("afterbegin", this.#message)
+    }
+
+    renderSpinner() {
+      const spinner = `<div class="spinner">
+      <svg>
+        <use href="${icons}#icon-loader"></use>
+      </svg>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", spinner)
     }
 
 

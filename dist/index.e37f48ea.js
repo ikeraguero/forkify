@@ -600,6 +600,7 @@ var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 var _modelJs = require("./model.js");
 const controlSearchResults = async function() {
     try {
+        (0, _resultsViewJsDefault.default).renderSpinner();
         // Searching and loading results
         const query = (0, _searchViewDefault.default).getQuery();
         await _modelJs.loadSearchResults(query);
@@ -613,8 +614,13 @@ const controlSearchResults = async function() {
         (0, _resultsViewJsDefault.default).renderError();
     }
 };
-const controlRecipe = async function() {
+const controlRecipe = async function(ev) {
     try {
+        if (ev === "load") {
+            (0, _recipeViewJsDefault.default).renderMessage();
+            return;
+        }
+        (0, _recipeViewJsDefault.default).renderSpinner();
         const id = window.location.hash.slice(1);
         await _modelJs.loadRecipe(id);
         // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
@@ -624,7 +630,7 @@ const controlRecipe = async function() {
         updateResults();
         (0, _bookmarksViewJsDefault.default).render();
     } catch (err) {
-        (0, _recipeViewJsDefault.default).renderError();
+        console.log(err);
     }
 };
 const controlPagination = function() {
@@ -649,6 +655,7 @@ const controlBookmarks = function() {
 };
 // Handling query when search form is submited
 const init = function() {
+    (0, _recipeViewJsDefault.default).renderSpinner();
     (0, _bookmarksViewJsDefault.default).setData(_modelJs.state.bookmarks);
     (0, _searchViewDefault.default).addEventHandler(controlSearchResults);
     (0, _recipeViewJsDefault.default).addEventHandler(controlRecipe);
@@ -2674,7 +2681,10 @@ class ResultsView {
         this.#data = data;
     }
     render() {
-        if (this.#parentEl.querySelector(".error")) this.#parentEl.querySelector(".error").remove();
+        if (this.#parentEl.querySelector(".error") || this.#parentEl.querySelector(".spinner")) {
+            this.#parentEl.querySelector(".error")?.remove();
+            this.#parentEl.querySelector(".spinner")?.remove();
+        }
         this.#container.innerHTML = "";
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup());
     /* Trying to add the preview--active class to the current recipe.
@@ -2743,6 +2753,16 @@ class ResultsView {
         this.#container.innerHTML = "";
         this.#parentEl.insertAdjacentHTML("afterbegin", markup);
     }
+    renderSpinner() {
+        const spinner = `<div class="spinner">
+      <svg>
+        <use href="${(0, _iconsSvgDefault.default)}#icon-loader"></use>
+      </svg>
+    </div> `;
+        this.#container.innerHTML = "";
+        this.#parentEl.insertAdjacentHTML("afterbegin", spinner);
+        console.log("b");
+    }
 }
 exports.default = new ResultsView;
 
@@ -2794,13 +2814,23 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
+    #message = `<div class="message">
+    <div>
+      <svg>
+        <use href="${0, _iconsSvgDefault.default}#icon-smile"></use>
+      </svg>
+    </div>
+    <p>Start by searching for a recipe or an ingredient. Have fun!</p>
+  </div>`;
     servings;
     addEventHandler(handler) {
         const options = [
             "load",
             "hashchange"
         ];
-        options.forEach((ev)=>window.addEventListener(ev, handler));
+        options.forEach((ev)=>window.addEventListener(ev, function() {
+                handler(ev);
+            }));
     }
     addServingsHandler(handler) {
         const btns = document.querySelector(".recipe__info-buttons");
@@ -2927,6 +2957,31 @@ class RecipeView {
         <p>Start by searching for a recipe or an ingredient. Have fun!</p>
       </div>
 `;
+    }
+    /*  renderError() {
+      console.log('A')
+      const markup = `<div class="error">
+      <div>
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+      </div>
+      <p>No recipes found for your query. Please try again!</p>
+    </div> `
+    this.#parentEl.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    } */ renderMessage() {
+        this.#parentEl.innerHTML = "";
+        this.#parentEl.insertAdjacentHTML("afterbegin", this.#message);
+    }
+    renderSpinner() {
+        const spinner = `<div class="spinner">
+      <svg>
+        <use href="${(0, _iconsSvgDefault.default)}#icon-loader"></use>
+      </svg>
+    </div> `;
+        this.#parentEl.innerHTML = "";
+        this.#parentEl.insertAdjacentHTML("afterbegin", spinner);
     }
 }
 exports.default = new RecipeView;

@@ -11,8 +11,9 @@ class ResultsView {
     }
 
     render() {
-      if(this.#parentEl.querySelector(".error")) {
-        this.#parentEl.querySelector(".error").remove()
+      if(this.#parentEl.querySelector(".error") || this.#parentEl.querySelector(".spinner")) {
+        this.#parentEl.querySelector(".error")?.remove()
+        this.#parentEl.querySelector(".spinner")?.remove()
       }
         this.#container.innerHTML = '';
         this.#container.insertAdjacentHTML("beforeend", this.generateMarkup())
@@ -86,6 +87,17 @@ class ResultsView {
     </div> `
     this.#container.innerHTML = '';
     this.#parentEl.insertAdjacentHTML("afterbegin", markup)
+    }
+
+    renderSpinner() {
+      const spinner = `<div class="spinner">
+      <svg>
+        <use href="${icons}#icon-loader"></use>
+      </svg>
+    </div> `
+    this.#container.innerHTML = '';
+    this.#parentEl.insertAdjacentHTML("afterbegin", spinner)
+    console.log('b')
     }
 }
 

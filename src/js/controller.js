@@ -10,6 +10,7 @@
 
   const controlSearchResults =  async function() {
     try {
+      resultsView.renderSpinner()
       // Searching and loading results
       const query = searchView.getQuery()
       await model.loadSearchResults(query)
@@ -26,21 +27,24 @@
     }
   }
 
-  const controlRecipe = async function() {
+  const controlRecipe = async function(ev) {
     try {
-
+      if(ev==='load') { 
+        recipeView.renderMessage()
+        return;
+      }
+      recipeView.renderSpinner()
       const id = window.location.hash.slice(1)
       await model.loadRecipe(id)
       
       // Checking if the current recipe object is not empty before rendering the recipe, if it is, function is returned
       if(!Object.keys(model.state.recipe).length > 0) return
-
       recipeView.setData(model.state.recipe)
       updateRecipe()
       updateResults()
       bookmarksView.render()
     } catch(err) {
-      recipeView.renderError()
+      console.log(err)
     }
     }
 
@@ -73,6 +77,7 @@
 
   // Handling query when search form is submited
   const init = function() {
+    recipeView.renderSpinner()
     bookmarksView.setData(model.state.bookmarks);
     searchView.addEventHandler(controlSearchResults)
     recipeView.addEventHandler(controlRecipe)
