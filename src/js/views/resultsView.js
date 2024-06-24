@@ -50,6 +50,11 @@ class ResultsView {
           <div class="preview__data">
             <h4 class="preview__title">${rec.title}</h4>
             <p class="preview__publisher">${rec.publisher}</p>
+            <div class="preview__user-generated" ${rec.key ? '' : 'style="visibility: hidden;"' }>
+        <svg>
+          <use href="${icons}#icon-user"></use>
+        </svg>
+    </div> 
           </div>
         </a>
       </li>`
@@ -68,13 +73,8 @@ class ResultsView {
     </div> `
     this.#parentEl.innerHTML = '';
     this.#parentEl.insertAdjacentHTML("afterbegin", markup)
-    }
-    <div class="preview__user-generated">
-        <svg>
-          <use href="${icons}#icon-user"></use>
-        </svg>
-    </div> */
-
+    }*/
+    
     renderError() {
       console.log('A')
       const markup = `<div class="error">

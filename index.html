@@ -242,13 +242,13 @@
     <div class="overlay hidden"></div>
     <div class="add-recipe-window hidden">
       <button class="btn--close-modal">&times;</button>
-      <form class="upload">
+      <form class="upload" name="upload">
         <div class="upload__column">
           <h3 class="upload__heading">Recipe data</h3>
           <label>Title</label>
-          <input value="TEST" required name="title" type="text" />
+          <input value="PIZZA AAA" required name="title" type="text" />
           <label>URL</label>
-          <input value="TEST" required name="sourceUrl" type="text" />
+          <input value="TESSSSSSST" required name="sourceUrl" type="text" />
           <label>Image URL</label>
           <input value="TEST" required name="image" type="text" />
           <label>Publisher</label>
@@ -263,6 +263,7 @@
           <h3 class="upload__heading">Ingredients</h3>
           <label>Ingredient 1</label>
           <input
+            class="ingredient"
             value="0.5,kg,Rice"
             type="text"
             required
@@ -271,6 +272,7 @@
           />
           <label>Ingredient 2</label>
           <input
+          class="ingredient"
             value="1,,Avocado"
             type="text"
             name="ingredient-2"
@@ -278,6 +280,7 @@
           />
           <label>Ingredient 3</label>
           <input
+          class="ingredient"
             value=",,salt"
             type="text"
             name="ingredient-3"
@@ -285,18 +288,24 @@
           />
           <label>Ingredient 4</label>
           <input
+          class="ingredient"
+          value=""
             type="text"
             name="ingredient-4"
             placeholder="Format: 'Quantity,Unit,Description'"
           />
           <label>Ingredient 5</label>
           <input
+          class="ingredient"
+          value=""
             type="text"
             name="ingredient-5"
             placeholder="Format: 'Quantity,Unit,Description'"
           />
           <label>Ingredient 6</label>
           <input
+          value=""
+          class="ingredient"
             type="text"
             name="ingredient-6"
             placeholder="Format: 'Quantity,Unit,Description'"

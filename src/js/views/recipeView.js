@@ -90,7 +90,7 @@ class RecipeView {
           </div>
         </div>
 
-        <div class="recipe__user-generated">
+        <div class="recipe__user-generated" ${this.#data.key ? '' : 'style="visibility: hidden;"' }>
           <svg>
             <use href="${icons}#icon-user"></use>
           </svg>
@@ -114,7 +114,7 @@ class RecipeView {
         </svg>
         <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity).toString() : ''}</div>
         <div class="recipe__description">
-          <span class="recipe__unit">${ing.unit}</span>
+          <span class="recipe__unit">${ing.unit ? ing.unit : ''}</span>
           ${ing.description}
         </div>
       </li>`})

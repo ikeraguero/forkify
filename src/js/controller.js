@@ -5,6 +5,7 @@
   import recipeView from './views/recipeView.js'
   import paginationView from './views/paginationView.js'
   import bookmarksView from './views/bookmarksView.js'
+  import addRecipeView from './views/addRecipeView.js'
   import * as model from './model.js'
 
 
@@ -85,6 +86,10 @@
     updateRecipe()
   }
 
+  const controlAddNewRecipe = function(newRecipe) {
+      model.uploadRecipe(newRecipe)
+  }
+
   // Handling query when search form is submited
   const init = function() {
     recipeView.renderSpinner()
@@ -92,6 +97,8 @@
     searchView.addEventHandler(controlSearchResults)
     recipeView.addEventHandler(controlRecipe)
     paginationView.addEventHandler(controlPagination)
+    addRecipeView.addSubmitHandler(controlAddNewRecipe)
+    addRecipeView.addEventHandler()
   }
 
   init()
